@@ -3,15 +3,14 @@ const app = express();
 const port = process.env.port || 8080;
 const mongoose = require("mongoose");
 const connectDB = require("./dbConn/connect");
-const bodyParser = require("body-parser");
 require("dotenv").config();
 
 //Connect to DB
 connectDB();
 
 app
+  .use(express.json())
   .use("/", require("./routes"))
-  .use(bodyParser.json())
   .use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(

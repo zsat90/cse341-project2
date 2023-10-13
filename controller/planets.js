@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const connectDB = require("../dbConn/connect");
-const Planets = require("../models/models");
+const { Planets } = require("../models/models");
 
 connectDB();
 
@@ -47,7 +47,7 @@ const createNewPlanet = async (req, res) => {
       surface_water,
     } = req.body;
 
-    const newPlanet = new Planets({
+    const newPlanet = await Planets.create({
       name,
       rotation_period,
       orbital_period,
@@ -58,8 +58,10 @@ const createNewPlanet = async (req, res) => {
       surface_water,
     });
 
-    await newPlanet.save();
-    res.status(201).json({ message: "Planet Created Successfully", planetId });
+    res.status(201).json({
+      message: "Planet Created Successfully",
+      personId: newPlanet._id,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Planet not created" || res.error });

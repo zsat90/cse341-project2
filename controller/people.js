@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const connectDB = require("../dbConn/connect");
-const People = require("../models/models");
+const { People } = require("../models/models");
 
 connectDB();
 
@@ -47,7 +47,7 @@ const createNewPerson = async (req, res) => {
       gender,
     } = req.body;
 
-    const newPerson = new People({
+    const newPerson = await People.create({
       name,
       height,
       mass,
@@ -57,11 +57,14 @@ const createNewPerson = async (req, res) => {
       birth_year,
       gender,
     });
-    await newPerson.save();
-    res.status(201).json({ message: "Person Created Successfully", personId });
+
+    res.status(201).json({
+      message: "Person Created Successfully",
+      personId: newPerson._id,
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Person not created" || res.error });
+    res.status(500).json({ error: "Person not created" });
   }
 };
 
