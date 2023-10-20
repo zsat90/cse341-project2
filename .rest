@@ -1,0 +1,133 @@
+// People requests
+GET http://localhost:8080/people HTTP/1.1
+
+### 
+GET http://localhost:8080/people/652f144da6267eddc64bb661 HTTP/1.1
+
+###
+POST http://localhost:8080/people HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Leia",
+    "height": "150",
+    "mass": "49",
+    "hair_color": "brown",
+    "skin_color": "light",
+    "eye_color": "brown",
+    "birth_year": "19BBY",
+    "gender": "female"
+}
+
+###
+PUT http://localhost:8080/people/65307517aac9b93d1d3fc8a6 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test",
+    "height": "150",
+    "mass": "49",
+    "hair_color": "brown",
+    "skin_color": "light",
+    "eye_color": "brown",
+    "birth_year": "19BBY",
+    "gender": "female"
+}
+
+###
+DELETE http://localhost:8080/people/65307517aac9b93d1d3fc8a6 HTTP/1.1
+
+
+
+// Planet requests
+###
+GET http://localhost:8080/planets HTTP/1.1
+
+###
+GET http://localhost:8080/planets/:id HTTP/1.1
+
+###
+POST http://localhost:8080/planets HTTP/1.1
+content-type: application/json
+
+{
+	"name": "Hoth",
+    "rotation_period": "23",
+    "orbital_period": "549",
+    "diameter": "7200",
+    "climate": "frozen",
+    "gravity": "1.1 standard",
+    "terrain": "tundra, ice caves, mountain ranges",
+    "surface_water": "100"
+}
+
+###
+PUT http://localhost:8080/planets/:id HTTP/1.1
+content-type: application/json
+{
+    "name": "Hoth",
+    "rotation_period": "26",
+    "orbital_period": "549",
+    "diameter": "7200",
+    "climate": "frozen",
+    "gravity": "1.1 standard",
+    "terrain": "tundra, ice caves",
+    "surface_water": "100"
+}
+
+###
+DELETE http://localhost:8080/planets/6529da57228bf793246195ab HTTP/1.1
+
+
+
+// Render People Requests
+###
+GET https://cse-341-swapi.onrender.com/people HTTP/1.1
+
+###
+GET https://cse-341-swapi.onrender.com/people/:id HTTP/1.1
+
+###
+POST https://cse-341-swapi.onrender.com/people HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Leia Organa",
+    "height": "150",
+    "mass": "49",
+    "hair_color": "brown",
+    "skin_color": "light",
+    "eye_color": "brown",
+    "birth_year": "19BBY",
+    "gender": "female"
+}
+
+
+
+
+
+
+
+// Render Planet Requests
+###
+GET https://cse-341-swapi.onrender.com/planets HTTP/1.1
+
+###
+GET https://cse-341-swapi.onrender.com/planets/:id HTTP/1.1
+
+###
+POST https://cse-341-swapi.onrender.com/planets HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Alderaan",
+    "rotation_period": "24",
+    "orbital_period": "364",
+    "diameter": "12500",
+    "climate": "temperate",
+    "gravity": "1 standard",
+    "terrain": "grasslands",
+    "surface_water": "40"
+}
+
+

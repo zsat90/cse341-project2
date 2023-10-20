@@ -2,4 +2,3 @@ node_modules
 .env
 people.json
 planets.json
-.rest

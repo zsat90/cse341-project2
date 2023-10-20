@@ -1,23 +1,30 @@
 const mongoose = require("mongoose");
 const connectDB = require("../dbConn/connect");
 const { Planets } = require("../models/models");
+const createHttpError = require("http-errors");
+const ObjectId = require("mongodb").ObjectId;
 
 connectDB();
 
-const getAllPlanets = async (req, res) => {
+const getAllPlanets = async (req, res, next) => {
   try {
     const planets = await mongoose.connection
       .collection("planets")
       .find({})
       .toArray();
-    res.json(planets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Internal server error" || res.error });
+    if (planets.length == 0) {
+      throw createHttpError(404, "Planets not Found");
+    }
+    res.status(200).json(planets);
+  } catch (error) {
+    next(error);
   }
 };
 
-const getPlanetById = async (req, res) => {
+const getPlanetById = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const planetId = req.params.id;
   try {
     const planet = await mongoose.connection
@@ -27,14 +34,13 @@ const getPlanetById = async (req, res) => {
     if (!planet) {
       return res.status(404).json({ error: "Planet not found" });
     }
-    res.json(planet);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Planet not found" });
+    res.status(200).json(planet);
+  } catch (error) {
+    next(error);
   }
 };
 
-const createNewPlanet = async (req, res) => {
+const createNewPlanet = async (req, res, next) => {
   try {
     const {
       name,
@@ -62,13 +68,15 @@ const createNewPlanet = async (req, res) => {
       message: "Planet Created Successfully",
       personId: newPlanet._id,
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Planet not created" || res.error });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updatePlanet = async (req, res) => {
+const updatePlanet = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const planetId = req.params.id;
   try {
     const udpatedPlanet = await Planets.findByIdAndUpdate(planetId, req.body, {
@@ -78,22 +86,23 @@ const updatePlanet = async (req, res) => {
       return res.status(404).json({ error: "Planet not found" });
     }
     res.status(204).end();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Planet not updated" || res.error });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deletePlanet = async (req, res) => {
+const deletePlanet = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const planetId = req.params.id;
   try {
     const deletedPlanet = await Planets.findByIdAndDelete(planetId);
     res
       .status(200)
       .json({ deletedPlanet, message: "Has been successfully deleted" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Planet not updated" || res.error });
+  } catch (error) {
+    next(error);
   }
 };
 

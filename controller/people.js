@@ -1,23 +1,30 @@
 const mongoose = require("mongoose");
 const connectDB = require("../dbConn/connect");
 const { People } = require("../models/models");
+const createHttpError = require("http-errors");
+const ObjectId = require("mongodb").ObjectId;
 
 connectDB();
 
-const getAllPeople = async (req, res) => {
+const getAllPeople = async (req, res, next) => {
   try {
     const people = await mongoose.connection
       .collection("people")
       .find({})
       .toArray();
-    res.json(people);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" || res.error });
+    if (people.length == 0) {
+      throw createHttpError(404, "People not found");
+    }
+    res.status(200).json(people);
+  } catch (error) {
+    next(error);
   }
 };
 
-const getPersonById = async (req, res) => {
+const getPersonById = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const personId = req.params.id;
   try {
     const person = await mongoose.connection
@@ -27,14 +34,13 @@ const getPersonById = async (req, res) => {
     if (!person) {
       return res.status(404).json({ error: "Person not found" });
     }
-    res.json(person);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" || res.error });
+    res.status(200).json(person);
+  } catch (error) {
+    next(error);
   }
 };
 
-const createNewPerson = async (req, res) => {
+const createNewPerson = async (req, res, next) => {
   try {
     const {
       name,
@@ -62,13 +68,15 @@ const createNewPerson = async (req, res) => {
       message: "Person Created Successfully",
       personId: newPerson._id,
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Person not created" });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updatePerson = async (req, res) => {
+const updatePerson = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const personId = req.params.id;
   try {
     const updatedPerson = await People.findByIdAndUpdate(personId, req.body, {
@@ -78,22 +86,23 @@ const updatePerson = async (req, res) => {
       return res.status(404).json({ error: "Person not found" });
     }
     res.status(204).end();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Person not updated" || res.error });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deletePerson = async (req, res) => {
+const deletePerson = async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ error: "Must use a valid id" });
+  }
   const personId = req.params.id;
   try {
     const deletedPerson = await People.findByIdAndDelete(personId);
     res
       .status(200)
       .json({ deletedPerson, message: "Has been sucessfully deleted" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Person not updated" || res.error });
+  } catch (error) {
+    next(error);
   }
 };
 

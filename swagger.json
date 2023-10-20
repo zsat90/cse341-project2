@@ -101,6 +101,48 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Updated Name"
+                },
+                "height": {
+                  "type": "string",
+                  "example": "Updated Height"
+                },
+                "mass": {
+                  "type": "string",
+                  "example": "Updated Mass"
+                },
+                "hair_color": {
+                  "type": "string",
+                  "example": "Updated Hair Color"
+                },
+                "skin_color": {
+                  "type": "string",
+                  "example": "Updated Skin Color"
+                },
+                "eye_color": {
+                  "type": "string",
+                  "example": "Updated Eye Color"
+                },
+                "birth_year": {
+                  "type": "string",
+                  "example": "Updated Birth Year"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "Updated Gender"
+                }
+              }
+            },
+            "description": "Updated person data"
           }
         ],
         "responses": {
@@ -218,13 +260,56 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Update a specific planet by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the planet to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Updated Planet Name"
+                },
+                "rotation_period": {
+                  "type": "string",
+                  "example": "Updated Rotation Period"
+                },
+                "orbital_period": {
+                  "type": "string",
+                  "example": "Updated Orbital Period"
+                },
+                "diameter": {
+                  "type": "string",
+                  "example": "Updated Diameter"
+                },
+                "climate": {
+                  "type": "string",
+                  "example": "Updated Climate"
+                },
+                "gravity": {
+                  "type": "string",
+                  "example": "Updated Gravity"
+                },
+                "terrain": {
+                  "type": "string",
+                  "example": "Updated Terrain"
+                },
+                "surface_water": {
+                  "type": "string",
+                  "example": "Updated Surface Water"
+                }
+              }
+            },
+            "description": "Updated planet data"
           }
         ],
         "responses": {
@@ -239,6 +324,7 @@
           }
         }
       },
+      
       "delete": {
         "description": "",
         "parameters": [

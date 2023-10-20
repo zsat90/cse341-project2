@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.port || 8080;
 const mongoose = require("mongoose");
 const connectDB = require("./dbConn/connect");
+const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
 //Connect to DB
@@ -23,7 +24,9 @@ app
       "GET, POST, PUT, DELETE, OPTIONS"
     );
     next();
-  });
+  })
+
+  .use(errorHandler);
 
 mongoose.connection.once("open", () => {
   console.log("connected to MongoDB");
