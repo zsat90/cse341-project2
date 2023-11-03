@@ -1,11 +1,10 @@
 const router = require("express").Router();
+const { requiresAuth } = require("express-openid-connect");
 
-// Add the routes here with router.use /, require needed file will have one for people and one for planets.
-
-router.use("/people", require("./people"));
-router.use("/planets", require("./planets"));
+router.use("/people", requiresAuth(), require("./people"));
+router.use("/planets", requiresAuth(), require("./planets"));
 
 //swagger route
-router.use("/", require("./swagger"));
+router.use("/", requiresAuth(), require("./swagger"));
 
 module.exports = router;

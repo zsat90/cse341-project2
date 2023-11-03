@@ -21,8 +21,8 @@ const config = {
 
 app
   .use(express.json())
-  .use("/", require("./routes"))
   .use(auth(config))
+  .use("/", require("./routes"))
   .use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -36,7 +36,6 @@ app
     );
     next();
   })
-
   .use(errorHandler);
 
 app.get("/", (req, res) => {
